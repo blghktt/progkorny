@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
  * amely elfogadja mindazon állományokat, melyeknek a neve neve illeszkedik a következő
  * minták bármelyikére: <i>?lma.txt</i>, <i>a*.tx?</i>, <i>a*t</i>.
  * 
- * <pre> WildcardFileFilter f1 = new WildcardFileFilter("alma.txt");
- * WildcardFileFilter f2 = new WildcardFileFilter("alma.txt");
- * WildcardFileFilter f3 = new WildcardFileFilter("alma.txt");
+ * <pre> WildcardFileFilter f1 = new WildcardFileFilter("?lma.txt");
+ * WildcardFileFilter f2 = new WildcardFileFilter("a*.tx?");
+ * WildcardFileFilter f3 = new WildcardFileFilter("a*t");
  * 
  * OrFileFilter of = new OrFileFilter();
  * of.addFileFilter(f1);
