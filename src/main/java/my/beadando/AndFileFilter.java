@@ -8,8 +8,38 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A {@link CompositeFileFilter} interfész implementációja, ami és kapcsolatot 
+ * A {@link CompositeFileFilter} interfész implementációja, ami <strong>és</strong> kapcsolatot 
  * teremt a különböző FileFilterek között.
+ * 
+ * <p><strong>Példa</strong>
+ * 
+ * <p>Az alábbi példakód bemutatja a {@link WildcardFileFilter} osztály segítségével
+ * egy olyan <code>AndFileFilter</code> objektum létrehozását ill. használatát, 
+ * amely elfogadja mindazon állományokat, melyeknek a neve neve illeszkedik a következő
+ * minták mindegyikére: <i>?lma.txt</i>, <i>a*.tx?</i>, <i>a*t</i>.
+ * 
+ * <pre> WildcardFileFilter f1 = new WildcardFileFilter("alma.txt");
+ * WildcardFileFilter f2 = new WildcardFileFilter("alma.txt");
+ * WildcardFileFilter f3 = new WildcardFileFilter("alma.txt");
+ * 
+ * AndFileFilter af = new AndFileFilter();
+ * af.addFileFilter(f1);
+ * af.addFileFilter(f2);
+ * af.addFileFilter(f3);
+ * 
+ * File file1 = new File("alma.txt");
+ * System.out.println(af.accept(file1)?"illeszkedik":"nem illeszkedik"); 
+ * File file2 = new File("atka.txp");
+ * System.out.println(af.accept(file2)?"illeszkedik":"nem illeszkedik");
+ * File file3 = new File("korte.txt");
+ * System.out.println(af.accept(file3)?"illeszkedik":"nem illeszkedik");</pre>
+ * 
+ * <p>Ezen program kimenete:
+ * 
+ * <pre> illeszkedik
+ * nem illeszkedik
+ * nem illeszkedik</pre>
+ * 
  */
 public class AndFileFilter implements CompositeFileFilter {
 
@@ -45,7 +75,6 @@ public class AndFileFilter implements CompositeFileFilter {
      *
      * @param filter a hozzáadandó szűrő
      */
-    @Override
     public void addFileFilter(FileFilter filter) {
         logger.trace("New filter add to filterSet");
         filterSet.add(filter);
@@ -57,7 +86,6 @@ public class AndFileFilter implements CompositeFileFilter {
      *
      * @param filter a kitörlendő szűrő
      */
-    @Override
     public void removeFileFilter(FileFilter filter) {
         logger.trace("remove a filter from the FilterSet");
         filterSet.remove(filter);
@@ -73,7 +101,6 @@ public class AndFileFilter implements CompositeFileFilter {
      * 
      * @throws IllegalStateException kivétel keletkezik, ha a szűrők halmaza üres
      */    
-    @Override
     public boolean accept(File pathname) throws IllegalStateException {
         if (filterSet.isEmpty()) {
             logger.error("Exception: empty filterSet.");
@@ -81,10 +108,10 @@ public class AndFileFilter implements CompositeFileFilter {
         } else {
             boolean result = true;
             for (FileFilter f : filterSet) {
-                result = (result && f.accept(pathname));
+                result = result && f.accept(pathname);
                 logger.info("filter result: "+f.accept(pathname));
             }
-            return (result);
+            return result;
         }
     }
 }

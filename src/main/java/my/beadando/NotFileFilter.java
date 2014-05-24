@@ -9,6 +9,25 @@ import org.slf4j.LoggerFactory;
 /**
  * A {@link FileFilter} interfész implementációja, ami pontosan akkor fogad el
  * egy állománynevet, ha azt az eredeti FileFilter nem fogadja el.
+ * 
+ * <p><strong>Példa</strong>
+ * 
+ * <p>Az alábbi példakód bemutatja a {@link WildcardFileFilter} osztály segítségével
+ * egy olyan <code>NotFileFilter</code> objektum létrehozását ill. használatát, 
+ * amely elfogadja mindazon állományokat, melyeknek neve nem <i>alma.txt</i>.
+ * 
+ * <pre> WildcardFileFilter f = new WildcardFileFilter("alma.txt");
+ * NotFileFilter nf = new NotFileFilter(f);
+ * 
+ * File file = new File("alma.txt");
+ * System.out.println(f.accept(file)?"illeszkedik":"nem illeszkedik"); 
+ * System.out.println(nf.accept(file)?"illeszkedik":"nem illeszkedik");</pre>
+ * 
+ * <p>Ezen program kimenete:
+ * 
+ * <pre> illeszkedik
+ * nem illeszkedik</pre>
+ * 
  */
 public class NotFileFilter implements FileFilter {
     
@@ -52,10 +71,9 @@ public class NotFileFilter implements FileFilter {
      *
      * @return true, ha az eredeti FileFilter nem fogadja el, false ellenkezőleg
      */
-    @Override
     public boolean accept(File pathname) {
         logger.info("pathname: "+pathname);
-        return(!this.filter.accept(pathname));
+        return !this.filter.accept(pathname);
     }
     
 }

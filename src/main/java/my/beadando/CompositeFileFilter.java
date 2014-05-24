@@ -12,13 +12,13 @@ public interface CompositeFileFilter extends FileFilter {
      * 
      * @param filter a hozzáadandó FileFilter
      */
-    public void addFileFilter(FileFilter filter);
+    void addFileFilter(FileFilter filter);
 
     /**
      * Eltávolít egy FileFilter-t a használandó filterek halmazából.
      * 
      * @param filter a törlendő FileFilter
      */
-    public void removeFileFilter(FileFilter filter);
+    void removeFileFilter(FileFilter filter);
     
 }

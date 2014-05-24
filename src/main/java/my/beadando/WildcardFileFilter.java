@@ -8,8 +8,41 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * A {@link FileFilter} interfész implementációja, melynek segítségével adott
+ * <p>A {@link FileFilter} interfész implementációja, melynek segítségével adott
  * mintára illeszkedő állománynevek fogadtathatók el.
+ * 
+ * <p>A {@code WildcardFileFilter} osztály úgy működik, hogy átalakítja a kapott mintát reguláris kifejezéssé,
+ * majd a {@link java.util.regex.Pattern} osztály segítségével ellenőrzni, hogy a megadott {@link java.io.File} neve
+ * illeszkedik-e a megadott mintára. 
+ * 
+ * <p><strong>Példa</strong>
+ * 
+ * <p>Az alábbi példakód bemutatja egy olyan <code>WildcardFileFilter</code> objektum
+ * létrehozását ill. használatát, amely elfogadja mindazon állományokat, melyeknek neve 
+ * <i>a</i> betűvel kezdődik, az állománynév vége <i>ma</i>, kiterjesztésének első két
+ * betűje <i>tx</i>, az utolsó karaktere pedig tetszőleges.
+ * 
+ * <pre> WildcardFileFilter f = new WildcardFileFilter("a*ma.tx?");
+ * 
+ * File file1 = new File("alma.txt");
+ * System.out.println(f.accept(file1)?"illeszkedik":"nem illeszkedik"); 
+ * File file2 = new File("ama.txl");
+ * System.out.println(f.accept(file2)?"illeszkedik":"nem illeszkedik");
+ * File file3 = new File("alllma.txp");
+ * System.out.println(f.accept(file3)?"illeszkedik":"nem illeszkedik");
+ * File file4 = new File("korte.txt");
+ * System.out.println(f.accept(file4)?"illeszkedik":"nem illeszkedik");
+ * File file5 = new File("alma.tx");
+ * System.out.println(f.accept(file5)?"illeszkedik":"nem illeszkedik");</pre>
+ * 
+ * <p>Ezen program kimenete:
+ * 
+ * <pre> illeszkedik
+ * illeszkedik
+ * illeszkedik
+ * nem illeszkedik
+ * nem illeszkedik</pre>
+ * 
  */
 public class WildcardFileFilter implements FileFilter {
     
@@ -79,7 +112,7 @@ public class WildcardFileFilter implements FileFilter {
         }
         sb.append('$');
         logger.info("convert wildcard to regex, regex: "+sb.toString());
-        return(sb.toString());
+        return sb.toString();
     }    
     
     /**
@@ -89,10 +122,10 @@ public class WildcardFileFilter implements FileFilter {
      *
      * @return visszatér azzal, hogy az állomány neve illeszkedik-e a mintára
      */
-    @Override
+    
     public boolean accept(File pathname) {
         logger.info("pathname: "+pathname);
-        return(Pattern.matches(this.convertWildcardToRegex(), pathname.getName()));
+        return Pattern.matches(this.convertWildcardToRegex(), pathname.getName());
     }
 
 }
